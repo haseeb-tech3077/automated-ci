@@ -9,15 +9,16 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [16.x, 18.x]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -25,5 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Jest tests
+      - name: Ensure Jest is executable
+        run: chmod +x ./node_modules/.bin/jest
+
+      - name: Run tests
         run: npx jest
